@@ -46,7 +46,11 @@ python drive.py model.h5
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.  A ipython notebook has also been provided as an execution example.   Note: Savung model using the ipython notebook is mandatory in windows machine because there is a bug in keras 2.0.9 where it fails to save lambda layers.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.  
+
+A ipython notebook has also been provided as an execution example.   
+
+Note: Saving model using the ipython notebook is mandatory in windows machine because there is a bug in keras 2.0.9 where it fails to save lambda layers.
 
 ### Model Architecture and Training Strategy
 
@@ -105,7 +109,9 @@ In order to gauge how well the model was working, I split my image and steering 
 
 Initialy I used 7 epochs training with overfitting.
 
-Then I ran the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I tried using dropuot layers, which produced gradual loss reduction, but the practical performance in the simulator was very poor.
+Then I ran the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track.
+
+To improve the driving behavior in these cases, I tried using dropout layers, which produced gradual loss reduction, but the practical performance in the simulator was very poor.
 
 Finally, I tried using 4 epocs to stop further overfitting.
 
@@ -137,8 +143,8 @@ To capture good driving behavior, I recorded two laps on `track one` using cente
 
 ![alt text][image2]
 
-After the collection process, I had X number of data points. I then preprocessed this data by using a Lambda layer in keras to normalize the images. Then I cropped the data using Cropping2D Layer, which crops the upper part of the image where there is no track and contains confusing data. It also crops the bootom part where only the car-front is visible.
+After the collection process, I had 14232 number of data points. I then preprocessed this data by using a Lambda layer in keras to normalize the images. Then I cropped the data using Cropping2D Layer, which crops the upper part of the image where there is no track and contains confusing data. It also crops the bootom part where only the car-front is visible.
 
-I finally randomly shuffled the data set and put 2% of the data into a validation set. 
+I finally randomly shuffled the data set and put 2% (3558) of the data into a validation set. 
 
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 4. I used an adam optimizer so that manually training the learning rate wasn't necessary.
