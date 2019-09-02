@@ -2,8 +2,6 @@
 
 ## Writeup Template
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Behavioral Cloning Project**
@@ -38,39 +36,60 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* README.md summarizing the results
 
 #### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
-```sh
+```
 python drive.py model.h5
 ```
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.  A ipython notebook has also been provided as an execution example.   Note: Savung model using the ipython notebook is mandatory in windows machine because there is a bug in keras 2.0.9 where it fails to save lambda layers.
 
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+`model.py` contains `Save_Model` function where the NVidia model achitecture has been implemented.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+A lambda layer is used to normalize the image. Then a cropping layer removes confusing areas. Then there are 5 convolution layer for image detection. Finally, after a flatten layer, 4 dense layers for regression.
+  Following is a table specifying the full network.
+
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160x320x3 RGB image   							| 
+| Lambda | lambda x: (x / 255.0) - 0.5 | input_shape=(160,320,3)							|
+| Cropping2D | cropping=((70,25), (0,0))									|
+| Convolution 5x5  |  24 filters 	| 2x2 stride	| activation='relu'									|
+| Convolution 5x5  |  36 filters 	| 2x2 stride	| activation='relu'									|
+| Convolution 5x5  |  48 filters 	| 2x2 stride	| activation='relu'									|
+| Convolution 3x3  |  64 filters 	| no stride	| activation='relu'									|
+| Convolution 3x3 |  64 filters 	| no stride	| activation='relu'									|
+| Flatten | 
+| Dense	| outputs 100        									|
+| Dense		| outputs 50        									|
+| Dense		| outputs 10        									|
+| Dense		| outputs 1        									|
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model was trained over 2 laps of data.
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+After several attempts, dropout layers could not improve the practicle performance of driving, so no dropout layers were added.
+
+Instead, only 3-4 epochs were used to train the model to avoid overfitting.
+
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually.
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I tried to record data using center lane driving.
 
 For details about how I created the training data, see the next section. 
 
